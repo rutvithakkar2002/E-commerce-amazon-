@@ -33,7 +33,7 @@
 		int userId = -1;
 		Cookie c[] = request.getCookies();
 		for (int i = 0; i < c.length; i++) {
-			if (c[i].getName().equals("userId")) {
+			if (c[i].getName().equals("userId")) { //there are so many cookies so, so we compare the id value with cookie.
 				userId = Integer.parseInt(c[i].getValue());
 			}
 		}
@@ -44,20 +44,29 @@
 	<div class="container">
 		<br> <br> <br>
 		<%
+			int total=0;
 			for (int i = 0; i < CartDao.carts.size(); i++) {
 				System.out.println("userid=> " + CartDao.carts.get(i).getUserId());
 				if (CartDao.carts.get(i).getUserId() != userId) {
 					continue;
 				}
 		%>
-		<%=CartDao.carts.get(i).getProductId()%><br>
-
+		<%=CartDao.carts.get(i).getProductId()%> &nbsp;
+		<%=ProductDao.getProductDetailById(CartDao.carts.get(i).getProductId()).getProductname()%>  :  <%=ProductDao.getProductDetailById(CartDao.carts.get(i).getProductId()).getProductprice() %><br>
 		<%
-			}
+		
+			total=total+ProductDao.getProductDetailById(CartDao.carts.get(i).getProductId()).getProductprice();
+		
+			} 
+		
 		%>
-
-
-	</div>
+		<br>	<br>
+		
+		Total=<%=total%>
+		
+		<a href="CheckoutServlet?userId=${cookie.userId.value}">CheckOut</a>
+		
+			</div>
 
 
 </body>
